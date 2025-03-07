@@ -1,0 +1,13 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 2025.01.22-23-g967d81a
+_src_path: gh:scientific-python/cookie
+backend: hatch
+email: bengal1@illinois.edu
+full_name: Ben Galewsky
+license: BSD
+org: ncsa
+project_name: dagster-ncsa
+project_short_description: A great package.A Python library providing useful components
+    for using [Dagster](https://dagster.io/) to create academic research cloud datalakes
+url: https://github.com/ncsa/dagster-ncsa
+vcs: true
