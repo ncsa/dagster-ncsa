@@ -55,11 +55,10 @@ class AirTableCatalogResource(ConfigurableResource):
         pub_date: datetime,
     ):
         """Create a record in the table"""
-        table_ref = self.api.table(self.base_id, self.table_id)
         catalog_rec = self.lookup_catalog(catalog)
         schema_rec = self.lookup_schema(catalog_rec, schema)
 
-        table_ref.create(
+        self._tables_table.create(
             {
                 "Catalog": [catalog_rec["id"]],
                 "Schema": [schema_rec["id"]],
