@@ -86,6 +86,8 @@ log_cli_level = "INFO"
 testpaths = [
   "tests",
 ]
+norecursedirs = ["tests/integration_tests"]
+
 
 
 [tool.coverage]
