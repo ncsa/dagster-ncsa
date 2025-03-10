@@ -69,7 +69,7 @@ def test_list_csv_files(mock_get_client):
     client.get_paginator.return_value = paginator
 
     s3 = S3ResourceNCSA()
-    csv_files = s3.list_csv_files("bucket", "/directory/path")
+    csv_files = s3.list_files("bucket", "/directory/path", ".csv")
 
     paginator.paginate.assert_called_with(Bucket="bucket", Prefix="/directory/path/")
     assert len(csv_files) == 2

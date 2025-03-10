@@ -77,7 +77,16 @@ class S3ResourceNCSA(S3Resource):
         except ClientError as e:
             return {"success": False, "message": f"Error: {e!s}", "error": e}
 
-    def list_csv_files(self, bucket_name, directory_path: str) -> list[str]:
+    def list_files(
+        self, bucket_name, directory_path: str, extension: str = ".csv"
+    ) -> list[str]:
+        """
+        List all files in a directory in an S3 bucket with a specific extension.
+        :param bucket_name:
+        :param directory_path:
+        :param extension: Should start with a period. Default is '.csv'
+        :return:
+        """
         if not directory_path.endswith("/"):
             directory_path += "/"
 
@@ -93,7 +102,7 @@ class S3ResourceNCSA(S3Resource):
             for page in paginator.paginate(Bucket=bucket_name, Prefix=directory_path):
                 if "Contents" in page:
                     for obj in page["Contents"]:
-                        if obj["Key"].endswith(".csv"):
+                        if obj["Key"].endswith(extension):
                             objects.append(obj["Key"])
             return objects
 
