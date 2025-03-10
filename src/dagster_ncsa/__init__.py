@@ -7,5 +7,6 @@ dagster-ncsa: A great package.A Python library providing useful components for u
 from __future__ import annotations
 
 from ._version import version as __version__
+from .s3_resource_ncsa import S3ResourceNCSA
 
-__all__ = ["__version__"]
+__all__ = ["S3ResourceNCSA", "__version__"]
