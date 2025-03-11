@@ -43,7 +43,7 @@ def test_lookup_catalog(mock_airtable_tables):
         "id": "recXZiwgbjGkelVoG",
         "createdTime": "2025-03-04T06:49:22.000Z",
         "fields": {
-            "CatalogName": "PublicHealth",
+            "Catalog": "PublicHealth",
             "Schemas": ["recc0Hl0AnR51Twn3"],
             "Tables": [
                 "recAmy7mdcwVGIn3V",
@@ -62,10 +62,10 @@ def test_lookup_catalog(mock_airtable_tables):
     mock_airtable_tables["api"].assert_called_once()
 
     mock_airtable_tables["catalogs"].first.assert_called_with(
-        formula=match({"CatalogName": "test"})
+        formula=match({"Catalog": "test"})
     )
 
-    assert cat["fields"]["CatalogName"] == "PublicHealth"
+    assert cat["fields"]["Catalog"] == "PublicHealth"
 
 
 def test_lookup_schema(mock_airtable_tables):
@@ -76,7 +76,7 @@ def test_lookup_schema(mock_airtable_tables):
         "id": "recc0Hl0AnR51Twn3",
         "createdTime": "2025-03-04T06:51:39.000Z",
         "fields": {
-            "SchemaName": "sdoh",
+            "Schema": "sdoh",
             "CatalogName": ["recXZiwgbjGkelVoG"],
             "Tables": [
                 "recAmy7mdcwVGIn3V",
@@ -90,16 +90,16 @@ def test_lookup_schema(mock_airtable_tables):
             "SchemaID": 1,
         },
     }
-    cat = {"fields": {"CatalogName": "PublicHealth", "CatalogID": "rec42"}}
+    cat = {"fields": {"Catalog": "PublicHealth", "CatalogID": "rec42"}}
     schema = airtable.lookup_schema(cat, "sdoh")
     mock_airtable_tables["base"].assert_called_with("baseID")
     mock_airtable_tables["api"].assert_called_once()
 
     mock_airtable_tables["schemas"].first.assert_called_with(
-        formula=match({"CatalogName": "rec42", "SchemaName": "sdoh"})
+        formula=match({"CatalogID": "rec42", "Schema": "sdoh"})
     )
 
-    assert schema["fields"]["SchemaName"] == "sdoh"
+    assert schema["fields"]["Schema"] == "sdoh"
 
 
 def test_create_table_record(mock_airtable_tables):
@@ -111,8 +111,8 @@ def test_create_table_record(mock_airtable_tables):
         "id": "recc0Hl0AnR51Twn3",
         "createdTime": "2025-03-04T06:51:39.000Z",
         "fields": {
-            "SchemaName": "sdoh",
-            "CatalogName": ["recXZiwgbjGkelVoG"],
+            "Schema": "sdoh",
+            "Catalog": ["recXZiwgbjGkelVoG"],
             "Tables": [
                 "recAmy7mdcwVGIn3V",
                 "recDHP4GlUHi5l2uG",
@@ -129,7 +129,7 @@ def test_create_table_record(mock_airtable_tables):
         "id": "recXZiwgbjGkelVoG",
         "createdTime": "2025-03-04T06:49:22.000Z",
         "fields": {
-            "CatalogName": "PublicHealth",
+            "Catalog": "PublicHealth",
             "Schemas": ["recc0Hl0AnR51Twn3"],
             "Tables": [
                 "recAmy7mdcwVGIn3V",
@@ -157,8 +157,7 @@ def test_create_table_record(mock_airtable_tables):
 
     mock_airtable_tables["tables"].create.assert_called_with(
         {
-            "Catalog": ["recXZiwgbjGkelVoG"],
-            "Schema": ["recc0Hl0AnR51Twn3"],
+            "SchemaID": ["recc0Hl0AnR51Twn3"],
             "TableName": "vdgb_f9s3",
             "Name": "Table of Gross Cigarette Tax Revenue Per State (Orzechowski and Walker Tax Burden on Tobacco)",
             "Description": "1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
