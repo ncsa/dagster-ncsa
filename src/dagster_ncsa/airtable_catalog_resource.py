@@ -9,7 +9,12 @@ from pyairtable.formulas import match
 
 
 class AirTableCatalogResource(ConfigurableResource):
-    """Dagster resource for interacting Airtable-based Catalog API"""
+    """
+    Dagster resource for interacting Airtable-based Catalog API
+    NOTE: Due to the implementation of connecting to the tables, this resource
+          won't work with EnvVar in the config. You need to use EnvVar.get_value()
+          to load the env vars at instantiation time.
+    """
 
     api_key: str = "XXXX"
     base_id: str = ""
@@ -34,12 +39,12 @@ class AirTableCatalogResource(ConfigurableResource):
 
     def lookup_catalog(self, catalog: str) -> dict[str, Any]:
         """Lookup a catalog in the table"""
-        return self._catalogs_table.first(formula=match({"CatalogName": catalog}))
+        return self._catalogs_table.first(formula=match({"Catalog": catalog}))
 
     def lookup_schema(self, catalog: dict, schema: str) -> dict[str, Any]:
         return self._schemas_table.first(
             formula=match(
-                {"CatalogName": catalog["fields"]["CatalogID"], "SchemaName": schema}
+                {"CatalogID": catalog["fields"]["CatalogID"], "Schema": schema}
             )
         )
 
@@ -60,8 +65,7 @@ class AirTableCatalogResource(ConfigurableResource):
 
         self._tables_table.create(
             {
-                "Catalog": [catalog_rec["id"]],
-                "Schema": [schema_rec["id"]],
+                "SchemaID": [schema_rec["id"]],
                 "TableName": table,
                 "Name": name,
                 "Description": description,
