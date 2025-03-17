@@ -6,7 +6,7 @@ from typing import Any
 from dagster import ConfigurableResource
 from pyairtable import Api
 from pyairtable.formulas import match
-
+from .models import TableEntry
 
 class AirTableCatalogResource(ConfigurableResource):
     """
@@ -48,29 +48,34 @@ class AirTableCatalogResource(ConfigurableResource):
             )
         )
 
-    def create_table_record(
-        self,
-        catalog: str,
-        schema: str,
-        table: str,
-        name: str,
-        deltalake_path: str,
-        description: str,
-        license_name: str,
-        pub_date: datetime,
-    ):
-        """Create a record in the table"""
-        catalog_rec = self.lookup_catalog(catalog)
-        schema_rec = self.lookup_schema(catalog_rec, schema)
+    def create_table_record(self, entry: TableEntry):
+        """
+        Create a record in the table using a TableEntry instance
 
-        self._tables_table.create(
-            {
-                "SchemaID": [schema_rec["id"]],
-                "TableName": table,
-                "Name": name,
-                "Description": description,
-                "DeltaTablePath": deltalake_path,
-                "License": license_name,
-                "PublicationDate": pub_date.strftime("%Y-%m-%d"),
-            }
-        )
+        Args:
+            entry: A TableEntry instance containing the table information
+        """
+        catalog_rec = self.lookup_catalog(entry.catalog)
+        schema_rec = self.lookup_schema(catalog_rec, entry.schema_name)
+
+        # Prepare record data
+        record_data = {
+            "SchemaID": [schema_rec["id"]],
+            "TableName": entry.table,
+            "Name": entry.name,
+            "DeltaTablePath": entry.deltalake_path,
+        }
+
+        # Add optional fields if provided
+        if entry.description is not None:
+            record_data["Description"] = entry.description
+
+        if entry.license_name is not None:
+            record_data["License"] = entry.license_name
+
+        if entry.pub_date is not None:
+            record_data["PublicationDate"] = entry.pub_date.strftime("%Y-%m-%d")
+        print(record_data)
+
+        # Create the record
+        self._tables_table.create(record_data)

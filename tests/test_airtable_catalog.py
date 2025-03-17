@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from datetime import datetime
 from unittest.mock import MagicMock, patch
+from dagster_ncsa.models import TableEntry
+
 
 import pytest
 from pyairtable.formulas import match
@@ -143,17 +145,18 @@ def test_create_table_record(mock_airtable_tables):
             "CatalogID": 1,
         },
     }
-
-    airtable.create_table_record(
+    entry = TableEntry(
         catalog="PublicHealth",
-        schema="sdoh",
+        schema_name="sdoh",
         table="vdgb_f9s3",
         name="Table of Gross Cigarette Tax Revenue Per State (Orzechowski and Walker Tax Burden on Tobacco)",
         deltalake_path="s3://sdoh-public/delta/data.cdc.gov/vdgb-f9s3/",
         description="1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
         license_name="Open Data Commons Attribution License",
-        pub_date=datetime.fromtimestamp(1616406567),
+        pub_date=datetime.fromtimestamp(1616406567)
     )
+
+    airtable.create_table_record(entry)
 
     mock_airtable_tables["tables"].create.assert_called_with(
         {
