@@ -3,8 +3,7 @@
 ```{toctree}
 :maxdepth: 2
 :hidden:
-airtable_catalog
-
+airtable_catlg_doc
 ```
 
 ```{include} ../README.md
@@ -15,4 +14,4 @@ airtable_catalog
 
 - {ref}`genindex`
 - {ref}`modindex`
-- {ref}`search`
+- {doc}`airtable_catlg_doc`

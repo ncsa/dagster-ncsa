@@ -24,9 +24,9 @@ class TableEntry(BaseModel):
     table: str
     name: str
     deltalake_path: str
-    description: Optional[str] = None
-    license_name: Optional[str] = None
-    pub_date: Optional[datetime] = None
+    description: str | None = None
+    license_name: str | None = None
+    pub_date: datetime | None = None
 
     model_config = {
         # Allow population by field name

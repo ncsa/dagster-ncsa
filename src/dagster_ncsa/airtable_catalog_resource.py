@@ -75,7 +75,6 @@ class AirTableCatalogResource(ConfigurableResource):
 
         if entry.pub_date is not None:
             record_data["PublicationDate"] = entry.pub_date.strftime("%Y-%m-%d")
-        print(record_data)
 
         # Create the record
         self._tables_table.create(record_data)

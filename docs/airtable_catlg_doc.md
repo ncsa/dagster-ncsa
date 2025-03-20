@@ -1,4 +1,5 @@
-# AirTable Catalog Resource
+(airtable_catlg_doc)=
+#AirTable Catalog Resource
 
 This module provides integration between Dagster and Airtable, allowing you to manage data catalog metadata in Airtable.
 
