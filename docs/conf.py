@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import importlib.metadata
-from typing import Any
 import sys
-import os
-sys.path.insert(0, os.path.abspath("../src"))
+from pathlib import Path
+from typing import Any
+
+sys.path.insert(0, Path("../src").resolve())
 
 project = "dagster-ncsa"
 copyright = "2025, Ben Galewsky"
@@ -22,9 +23,9 @@ extensions = [
     "sphinx_copybutton",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",  # For Google-style docstrings
-    "sphinx.ext.viewcode"  # For linking to source code
-    ]
-html_static_path = ['_static']
+    "sphinx.ext.viewcode",  # For linking to source code
+]
+html_static_path = ["_static"]
 
 source_suffix = [".rst", ".md"]
 exclude_patterns = [
@@ -69,12 +70,7 @@ nitpick_ignore = [
     ("py:class", "_io.BytesIO"),
 ]
 
-html_js_files = [
-    'jquery.js',
-    'underscore.js',
-    'doctools.js',
-    'searchtools.js'
-]
+html_js_files = ["jquery.js", "underscore.js", "doctools.js", "searchtools.js"]
 
 
 always_document_param_types = True

@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Any
 
 from dagster import ConfigurableResource
 from pyairtable import Api
 from pyairtable.formulas import match
+
 from .models import TableEntry
+
 
 class AirTableCatalogResource(ConfigurableResource):
     """

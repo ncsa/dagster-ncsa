@@ -2,13 +2,12 @@ from __future__ import annotations
 
 from datetime import datetime
 from unittest.mock import MagicMock, patch
-from dagster_ncsa.models import TableEntry
-
 
 import pytest
 from pyairtable.formulas import match
 
 from dagster_ncsa.airtable_catalog_resource import AirTableCatalogResource
+from dagster_ncsa.models import TableEntry
 
 
 @pytest.fixture
@@ -153,7 +152,7 @@ def test_create_table_record(mock_airtable_tables):
         deltalake_path="s3://sdoh-public/delta/data.cdc.gov/vdgb-f9s3/",
         description="1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
         license_name="Open Data Commons Attribution License",
-        pub_date=datetime.fromtimestamp(1616406567)
+        pub_date=datetime.fromtimestamp(1616406567),
     )
 
     airtable.create_table_record(entry)

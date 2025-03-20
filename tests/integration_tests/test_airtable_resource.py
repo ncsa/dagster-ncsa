@@ -5,8 +5,9 @@ from datetime import datetime
 import dotenv
 import pytest
 from dagster import EnvVar
-from dagster_ncsa.models import TableEntry
+
 from dagster_ncsa.airtable_catalog_resource import AirTableCatalogResource
+from dagster_ncsa.models import TableEntry
 
 
 @pytest.fixture
@@ -50,11 +51,11 @@ def test_create_table(airtable_resource):
             deltalake_path=delta_path,
             description="1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
             license_name="Open Data Commons Attribution License",
-            pub_date=datetime.fromtimestamp(1616406567)
+            pub_date=datetime.fromtimestamp(1616406567),
         )
 
         # Create the record using the TableEntry instance
         airtable_resource.create_table_record(entry)
     except Exception as e:
-        print(f"Error occurred: {type(e).__name__}: {str(e)}")
+        print(f"Error occurred: {type(e).__name__}: {e}")
         raise
