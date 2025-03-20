@@ -5,8 +5,6 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dagster-ncsa"
-version = "0.1.0"
-packages = [{include = "dagster_ncsa", from = "src"}]
 
 
 authors = [
