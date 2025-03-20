@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -25,9 +26,9 @@ class TableEntry(BaseModel):
     table: str
     name: str
     deltalake_path: str
-    description: str | None = None
-    license_name: str | None = None
-    pub_date: datetime | None = None
+    description: Optional[str] = None  # type: ignore[UP007]
+    license_name: Optional[str] = None  # type: ignore[UP007]
+    pub_date: Optional[datetime] = None  # type: ignore[F821, UP007]
 
     model_config = {
         # Allow population by field name
