@@ -5,8 +5,9 @@ from datetime import datetime
 import dotenv
 import pytest
 from dagster import EnvVar
-from dagster_ncsa.models import TableEntry
+
 from dagster_ncsa.airtable_catalog_resource import AirTableCatalogResource
+from dagster_ncsa.models import TableEntry
 
 
 @pytest.fixture
@@ -42,6 +43,14 @@ def test_create_table(airtable_resource):
         schema_rec = airtable_resource.lookup_schema(catalog_rec, "sdoh")
         print(schema_rec)
 
+        tags = ["NIH", "Tobacco"]
+
+        # Test tag lookup functionality
+        print("Looking up existing tags:")
+        for tag in tags:
+            tag_record = airtable_resource.find_tag_by_name(tag)
+            print(f"Tag '{tag}': {'Found' if tag_record else 'Not found'}")
+
         entry = TableEntry(
             catalog="PublicHealth",
             schema_name="sdoh",
@@ -50,11 +59,18 @@ def test_create_table(airtable_resource):
             deltalake_path=delta_path,
             description="1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
             license_name="Open Data Commons Attribution License",
-            pub_date=datetime.fromtimestamp(1616406567)
+            pub_date=datetime.fromtimestamp(1616406567),
+            tags=tags,
+        )
+        print("Testing retrieval by tag:")
+        tables_with_tag = airtable_resource.get_tables_by_tag("NIH")
+
+        print(
+            f"Found {[item['fields']['TableName'] for item in tables_with_tag]} tables with the 'NIH' tag"
         )
 
         # Create the record using the TableEntry instance
         airtable_resource.create_table_record(entry)
     except Exception as e:
-        print(f"Error occurred: {type(e).__name__}: {str(e)}")
+        print(f"Error occurred: {type(e).__name__}: {e}")
         raise

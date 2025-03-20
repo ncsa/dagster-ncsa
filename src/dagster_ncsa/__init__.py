@@ -6,9 +6,8 @@ dagster-ncsa: A great package.A Python library providing useful components for u
 
 from __future__ import annotations
 
+from . import airtable_catalog_resource, models
 from ._version import version as __version__
 from .s3_resource_ncsa import S3ResourceNCSA
-from . import  models
-from . import airtable_catalog_resource
 
-__all__ = ["S3ResourceNCSA", "__version__"]
+__all__ = ["S3ResourceNCSA", "__version__", "airtable_catalog_resource", "models"]
