@@ -7,6 +7,7 @@ import pytest
 from dagster import EnvVar
 
 from dagster_ncsa.airtable_catalog_resource import AirTableCatalogResource
+from dagster_ncsa.models import TableEntry
 
 
 @pytest.fixture
@@ -29,16 +30,32 @@ def test_lookup_schema(airtable_resource):
 
 
 def test_create_table(airtable_resource):
-    bucket_name = "sdoh-public"
-    delta_path = f"s3://{bucket_name}/delta/data.cdc.gov/vdgb-f9s3/"
+    try:
+        bucket_name = "sdoh-public"
+        delta_path = f"s3://{bucket_name}/delta/data.cdc.gov/vdgb-f9s3/"
 
-    airtable_resource.create_table_record(
-        catalog="PublicHealth",
-        schema="sdoh",
-        name="Table of Gross Cigarette Tax Revenue Per State (Orzechowski and Walker Tax Burden on Tobacco)",
-        table="vdgb_f9s3",
-        description="1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
-        deltalake_path=delta_path,
-        license_name="Open Data Commons Attribution License",
-        pub_date=datetime.fromtimestamp(1616406567),
-    )
+        # Print the results of the lookups
+        print("Catalog lookup:")
+        catalog_rec = airtable_resource.lookup_catalog("PublicHealth")
+        print(catalog_rec)
+
+        print("Schema lookup:")
+        schema_rec = airtable_resource.lookup_schema(catalog_rec, "sdoh")
+        print(schema_rec)
+
+        entry = TableEntry(
+            catalog="PublicHealth",
+            schema_name="sdoh",
+            table="vdgb_f9s3",
+            name="Table of Gross Cigarette Tax Revenue Per State (Orzechowski and Walker Tax Burden on Tobacco)",
+            deltalake_path=delta_path,
+            description="1970-2019. Orzechowski and Walker. Tax Burden on Tobacco",
+            license_name="Open Data Commons Attribution License",
+            pub_date=datetime.fromtimestamp(1616406567),
+        )
+
+        # Create the record using the TableEntry instance
+        airtable_resource.create_table_record(entry)
+    except Exception as e:
+        print(f"Error occurred: {type(e).__name__}: {e}")
+        raise
