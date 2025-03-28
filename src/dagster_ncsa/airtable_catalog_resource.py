@@ -152,3 +152,6 @@ class AirTableCatalogResource(ConfigurableResource):
         except Exception as e:
             print(f"Error retrieving tables by tag: {type(e).__name__}: {e}")
             return []
+
+        # Create the record
+        self._tables_table.create(record_data)
