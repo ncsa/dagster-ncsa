@@ -5,6 +5,7 @@ import shutil
 from pathlib import Path
 
 import nox
+import warnings
 
 DIR = Path(__file__).parent.resolve()
 
@@ -40,8 +41,15 @@ def tests(session: nox.Session) -> None:
     """
     Run the unit and regular tests.
     """
+    warnings.filterwarnings("ignore", category=UserWarning, module="dagster_aws")
+
     session.install(".[test]")
-    session.run("pytest", *session.posargs)
+    session.run(
+        "pytest",
+        "-W",  # Suppress all warnings
+        "ignore::pydantic.warnings.PydanticDeprecatedSince211",
+        *session.posargs,
+    )
 
 
 @nox.session(reuse_venv=True)
