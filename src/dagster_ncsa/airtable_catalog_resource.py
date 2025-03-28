@@ -5,6 +5,7 @@ from typing import Any, List, Optional
 from dagster import ConfigurableResource
 from pyairtable import Api
 from pyairtable.formulas import match
+from requests.exceptions import RequestException
 
 from .models import TableEntry
 
@@ -148,10 +149,6 @@ class AirTableCatalogResource(ConfigurableResource):
 
             # print(f"Found {  tables} tables with tag '{tag_name}'")
             return tables
-
-        except Exception as e:
-            print(f"Error retrieving tables by tag: {type(e).__name__}: {e}")
+        except RequestException as e:
+            print(f"Network error: {e}")
             return []
-
-        # Create the record
-        self._tables_table.create(record_data)
