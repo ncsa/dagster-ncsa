@@ -1,35 +1,38 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
 
 class TableEntry(BaseModel):
     """
-    Pydantic model representing a table entry with enforced required fields and types.
-
-    Attributes:
-        catalog: The catalog name
-        schema: The schema name
-        table: The table name
-        name: Display name for the table
-        deltalake_path: Path to the Delta Lake table
-        description: Optional description of the table
-        license_name: Optional license name
-        pub_date: Optional publication date
+    Represents a table entry in the catalog.
     """
 
     catalog: str
-    schema_name: str
-    table: str
-    name: str
-    deltalake_path: str
-    description: Optional[str] = None  # type: ignore[UP007]
-    license_name: Optional[str] = None  # type: ignore[UP007]
-    pub_date: Optional[datetime] = None  # type: ignore[F821, UP007]
+    """The catalog name. :no-index:"""
 
+    deltalake_path: str
+    """The Delta Lake path. :no-index:"""
+
+    description: str
+    """The table description. :no-index:"""
+
+    license_name: str
+    """The license name. :no-index:"""
+
+    name: str
+    """The table name. :no-index:"""
+
+    pub_date: datetime
+    """The publication date. :no-index:"""
+
+    schema_name: str
+    """The schema name. :no-index:"""
+
+    table: str
+    """The table identifier. :no-index:"""
     model_config = {
         # Allow population by field name
         "populate_by_name": True,

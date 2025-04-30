@@ -11,10 +11,11 @@ from .models import TableEntry
 
 class AirTableCatalogResource(ConfigurableResource):
     """
-    Dagster resource for interacting Airtable-based Catalog API
+    Dagster resource for interacting with the Airtable-based Catalog API.
+
     NOTE: Due to the implementation of connecting to the tables, this resource
-          won't work with EnvVar in the config. You need to use EnvVar.get_value()
-          to load the env vars at instantiation time.
+    won't work with EnvVar in the config. You need to use EnvVar.get_value()
+    to load the env vars at instantiation time.
     """
 
     api_key: str = "XXXX"
